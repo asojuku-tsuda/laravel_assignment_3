@@ -1,23 +1,15 @@
 <?php
 
+use App\Http\Controllers\MemoController;
 use Illuminate\Support\Facades\Route;
 
-// ホームページ
+// メインページはメモ一覧にリダイレクト
 Route::get('/', function () {
-    return view('home');
-})->name('home');
+    return redirect()->route('memos.index');
+});
 
-// ページ1
-Route::get('/page1', function () {
-    return view('page1');
-})->name('page1');
-
-// ページ2
-Route::get('/page2', function () {
-    return view('page2');
-})->name('page2');
-
-// パラメータありルート
-Route::get('/user/{id}', function ($id) {
-    return view('user', ['id' => $id]);
-})->name('user.show');
+// メモリソースのルート定義（GETとPOSTのみ）
+Route::get('/memos', [MemoController::class, 'index'])->name('memos.index');
+Route::get('/memos/create', [MemoController::class, 'create'])->name('memos.create');
+Route::post('/memos', [MemoController::class, 'store'])->name('memos.store');
+Route::get('/memos/{memo}', [MemoController::class, 'show'])->name('memos.show');
